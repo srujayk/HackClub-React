@@ -367,3 +367,5 @@ class Profile extends React.Component {
 ```
 
 ---
+
+And that's it for our workshop!
