@@ -146,6 +146,7 @@ Before that, one quick thing. First of all, remember that any multi-line JSX sta
 
 Finally, change the first input to the `ReactDOM.render` method to initialize this new `Profile` component.
 
+---
 ***Stuck?***
 
 Your code should look something like this:
@@ -164,6 +165,8 @@ ReactDOM.render(<SomeComponent />, ...);
 ```
 That's not all of it, but it's enough to get you started. If you're having trouble using the `img` tag, Google can definitely help.
 
+---
+
 Great! We now have a page with an image, a paragraph, and a header. One problem: it doesn't look great. Head over to the `index.css` file, and let's make this look better.
 
 Let's make our `h1` and `p` center-justified, and our `img` to have a width of 50%. To center the image, add the following properties under the `img` tag in the CSS:
@@ -176,3 +179,59 @@ margin-right: auto;
 Feel free to add any more stylish things you want before we move onto the next section.
 
 ### Part 3: props
+
+Props is short for properties, and it allows you to pass inputs into your components. Components wouldn't be as useful if you just had the same code over and over. The way we'd pass inputs into a component is the same way you use attributes in HTML.
+
+For example, lets say we wanted to modify our `Header` component to say "Hi, *name inputted*!". We would pass a *prop* into our `Header` component by setting an attribute of `name` when we instantiate it. The code would look like this:
+
+```
+<Header name="your name" />
+```
+
+Then, to use this inputted name in our `Header` component, we would modify it to look like this:
+
+```
+class Header extends React.Component {
+  render() {
+    return <h1>Hi, {this.props.name}</h1>;
+  }
+}
+```
+`this.props.name` is how we refer to a `prop` of `this` component that is called `name`. This is JavaScript Object Notation, if you've heard of that before. Don't worry if you haven't.
+
+The reason for the curly braces around it is this is how we use JavaScript code within our JSX. For example, if we typed something like `<h1>I am 1 + 16 years old.</h1>` in JSX, it would display as ***I am 1 + 16 years old***. But, by placing the curly braces around the `{1 + 16}` (making the code `<h1>I am {1 + 16} years old.</h1>`), it would display as ***I am 17 years old.***
+
+#### **Exercise 3**
+
+Let's practice using props by making a new component called `Hobby`.
+
+`Hobby` should follow the same structure as `Header`, but it should have two props, `category` and `list`. These will later be used for taking in the `Hobby`'s category, and the list of actually hobbies in that category.
+
+Use both of these props in a single line, in the format "`category`: `list`", with the `category` in bold. For example, "**Sports**: football, basketball".
+
+Then, in your `Profile` component, add `<h3>My Hobbies</h3>` underneath the paragraph from before. (You might want to center this in `index.css`).
+
+After that, make 3 new `Hobby` elements underneath your "My Hobbies" heading , with the two props from above. `category` should be a single word string, and `list` should be a single string with each hobby name separated by commas.
+
+Remember the rule about multi-line JSX `return` statements from before, and the `strong` tag in HTML might come in handy.
+
+---
+***Stuck?***
+
+Your code for `Hobby` should look something like this:
+```
+class SomeComponent extends React.Component {
+  render() {
+    return (<div>
+              <p><strong>{this.props.firstProp}</strong>: this.props.secondProp}</p>
+            </div>);
+  }
+}
+```
+And to instantiate it in `Profile`, think along the lines of `<SomeComponent firstProp="..." secondProp="..." />`.
+
+---
+
+Great! Now we know how to pass properties into our components to make them more useful.
+
+### Part 4: state
