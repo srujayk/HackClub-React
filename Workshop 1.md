@@ -1,10 +1,10 @@
 # React Workshop 1
 
-**Prerequisities**: HTML and CSS
+**Prerequisites**: HTML and CSS
 
 **What we're going to building**: A basic portfolio website
 
-**What you'll learn in this workshop**: Basic JavaScript, JSX, React (components, props, and state)
+**What you'll learn in this workshop**: Basic JavaScript, React (JSX, components, props, and state)
 
 ### Part 1: Basic JavaScript
 
@@ -37,15 +37,16 @@ Let's set up your coding environment! Head over to [Repl.it](http://repl.it) and
 
 Then, create a new Repl and select **React** for the language; this will create your programming environment. On the right you'll see spaces for a command line, as well as a preview for your React application. Go ahead and hit **start** near the top of your workspace to preview a sample React app.
 
-Before we move on, delete lines 3 and 4 from `index.js`, and delete the files `App.js` and `App.css` from the sidebar.
+Before we move on, delete line 4 from `index.js`, and delete the files `App.js` and `App.css` from the sidebar.
 
 A brief explanation of the lines that are left:
 
 ```
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './index.css';
 ```
-These lines import the `React` and `ReactDOM` packages for you to use. They provide you with some necessary functions/classes we'll need.
+These lines import the `React` and `ReactDOM` packages for you to use. They provide you with some necessary functions/classes we'll need. It also imports the CSS file that will be used in your project.
 
 ```
 ReactDOM.render(<App />, document.getElementById('root'));
@@ -57,7 +58,7 @@ This line is what passes the code you write from JavaScript onto your HTML page.
 <html>
     <head>
         <title>Some random title</title>
-        <link type="text\css" src="index.css" />
+        <link type="text\css" href="index.css" />
     </head>
     <body>
         <div id="root">
@@ -116,8 +117,62 @@ Unfortunately, our screen now gives us an error. This is because our component i
 
 ```
 render() {
-    return <h1>Hi</hi>;
+    return <h1>Hi</h1>;
 }
 ```
 
-Every component requires a `render` method. 
+Every component requires a `render` method. When the component is initialized (using `<Header />`), the component class's `render` method is automatically called, and whatever is returned is passed into the `ReactDOM.render` method's first input as JSX.
+
+React's key feature is that components are reusable. Now that you've created this `Header` component, we should be able to reuse it super easily. Below the `Header` component, but above the `ReactDOM.render` call, add the following lines:
+
+```
+const multiHeaders = (<div>
+                        <Header />
+                        <Header />
+                    </div>);
+```
+
+Note the parentheses around the JSX. This is good practice whenever you are writing JSX that spans multiple lines, and is also required whenever you write multi-line JSX in the `return` statement of a component's `render` method.
+
+Now, change the first input to `ReactDOM.render` to this variable, `multiHeaders`, and watch the page reload. Now there are two headers, without having to write `<h1>Hi</h1>` over again! In this case, it wasn't much code that we avoided, but imagine having to repeat 100s of lines of code. Components are really powerful.
+
+#### **Exercise 2**
+
+Delete the `multiHeaders` variable we created before.
+
+Then, create a new component called `Profile`. Follow the structure of the `Header` component, and in the `return` line of the `render` function, add 3 elements: the `Header` component we had before, a `p` (paragraph) tag with a brief summary of yourself, and an `img` (image) tag with a picture of a funny/cool picture from Google Images.
+
+Before that, one quick thing. First of all, remember that any multi-line JSX statements that go in this `return` statement must be enclosed with parentheses. Also, In order to have multiple lines of JSX, all of it must be enclosed within one single parent tag. So, once you've created all 3 of the elements above (`Header`, `p`, and `img`), place them inside a `div` that encloses all 3.
+
+Finally, change the first input to the `ReactDOM.render` method to initialize this new `Profile` component.
+
+***Stuck?***
+
+Your code should look something like this:
+```
+class SomeComponent extends React.Component {
+    render() {
+        return (<div>
+                    <Header />
+                    <p>This is a paragraph.</p>
+                    ...
+                </div>);
+    }
+}
+
+ReactDOM.render(<SomeComponent />, ...);
+```
+That's not all of it, but it's enough to get you started. If you're having trouble using the `img` tag, Google can definitely help.
+
+Great! We now have a page with an image, a paragraph, and a header. One problem: it doesn't look great. Head over to the `index.css` file, and let's make this look better.
+
+Let's make our `h1` and `p` center-justified, and our `img` to have a width of 50%. To center the image, add the following properties under the `img` tag in the CSS:
+
+```
+display: block;
+margin-left: auto;
+margin-right: auto;
+```
+Feel free to add any more stylish things you want before we move onto the next section.
+
+### Part 3: props
