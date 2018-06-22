@@ -31,13 +31,13 @@ This creates a class named `Hi` that has one method called `sayHi`. This method 
 And that's it. That's pretty much all the JavaScript you really need to know to write your
 first React application.
 
-### Part 1: Setup
+### Part 2: Setup
 
 Let's set up your coding environment! Head over to [Repl.it](http://repl.it) and create an account or log in.
 
 Then, create a new Repl and select **React** for the language; this will create your programming environment. On the right you'll see spaces for a command line, as well as a preview for your React application. Go ahead and hit **start** near the top of your workspace to preview a sample React app.
 
-Before we move on, delete line 4 from `index.js`, and delete the files `App.js` and `App.css` from the sidebar.
+Before we move on, delete line 4 from `index.js`, and delete the files `App.js`, `App.css`, and `logo.svg` from the sidebar.
 
 A brief explanation of the lines that are left:
 
@@ -69,7 +69,7 @@ This line is what passes the code you write from JavaScript onto your HTML page.
 
 Don't worry if all of that didn't make sense, it will soon. Now you're ready to start coding!
 
-### Part 2: JSX
+### Part 3: JSX
 
 ##### HTML
 
@@ -99,7 +99,7 @@ Let's try writing some JSX. In line 4, replace `<App />` with `<h1>Hi</h1>`, and
 Play around with it, adding different HTML elements into this first slot.
 
 
-### Part 2: Components
+### Part 4: Components
 
 React is all about components. Basically what a component is is a building block in your code. They are reusable elements, so you can create, for example, the structure for a button, one time, and make 50 buttons on your page.
 
@@ -178,7 +178,7 @@ margin-right: auto;
 ```
 Feel free to add any more stylish things you want before we move onto the next section.
 
-### Part 3: props
+### Part 5: props
 
 Props is short for properties, and it allows you to pass inputs into your components. Components wouldn't be as useful if you just had the same code over and over. The way we'd pass inputs into a component is the same way you use attributes in HTML.
 
@@ -234,4 +234,136 @@ And to instantiate it in `Profile`, think along the lines of `<SomeComponent fir
 
 Great! Now we know how to pass properties into our components to make them more useful.
 
-### Part 4: state
+### Part 6: state
+
+State is another important concept for React components. It's like props in that it allows you to make your components more dynamic, but there's one key difference: props are passed into a component from a different component, while state is managed by the component itself.
+
+An example of props vs. state is while `name` would be something passed into a component, something like `color` could be managed by the component itself.
+
+Let's add a state to our `Header`. To start off, in the curly braces for the class, *before* the `render` method, add the following code:
+
+```
+constructor(props) {
+    super(props);
+}
+```
+Don't worry about this means, think of it as a formality we need to go through to add a state. Now, underneath the line `super(props);`, we're going to add a state. Add:
+
+```
+this.state = {};
+```
+`this.state` is a JavaScript object that can store some data for us. It stores *key-value pairs*. This means that to store an attribute for our header called `color`, which we want to be `blue`, `color` is the *key* and `blue` is the *value*. We would do it like this:
+
+```
+this.state = { color: "blue" };
+```
+
+We can now actually implement this color in our `Header`. Add an `style` attribute to the `h1` tag in `Header`, and set it equal to `{{color: this.state.color}}`. The line should now look like this:
+
+```
+return <h1 style={{color: this.state.color}}>Hi</h1>;
+```
+
+This sets the `color` property of the `style` attribute of our `h1` tag to the value stored in `this.state.color`, which is `blue`. If you refresh, your header text should now be blue!
+
+What if we now wanted to change the state? Let's say in this case, we want the `Header` text to change to green if we click a button. To do this, first we need to make a method in JavaScript that will do this for us.
+
+```
+changeColor() {
+    if (this.state.color === 'blue') {
+        this.setState({ color: 'green' });
+    } else {
+        this.setState({ color: 'blue' });
+    }
+}
+```
+
+This code might look complicated, but it's not too bad. Basically, it checks `if` the current color stored in `this.state.color` is equal to `blue`. If it is, it sets the `color` attribute of `this.state` to `green`. If `this.state.color` is not `blue`, it is assumed to be `green`, so in this case it goes to the `else` and sets the state back to `blue`.
+
+To do this, it calls `this.setState()`. `this.setState` takes in a JavaScript object, with *key-value pairs* of the attributes you want to change. In this case, `{ color: 'blue' }` is a JavaScript object that is inputted to change `this.state.color` to blue.
+
+Whew. That was complicated, but hopefully it makes sense. This code in the box above needs to be placed **in between** the `constructor` and `render` methods, like so:
+
+```
+class Header extends React.Component {
+  constructor(props) {
+    ...
+  }
+
+  changeColor() {
+    ...
+  }
+
+  render() {
+    ...
+  }
+}
+```
+
+Now, to get our method to work, add this line to the end of the constructor:
+
+```
+this.changeColor = this.changeColor.bind(this);
+```
+Don't worry about what this means for now, it's just so the component can access our method.
+
+Now that our method is in the code, and the component can see the method, we're ready to add the toggle button.
+
+```
+<button onClick={this.changeColor}>
+    Change color
+</button>
+```
+This is our `button`. Looking at it, it seems pretty intuitive. It's a `button` that says **Change color** on it, and when clicked (set by the `onClick` attribute), calls our `changeColor` method.
+
+We're done! On your screen, you should now see a button that, when clicked, *changes the state* of the heading to either blue or green. All we have to do now is make it centered and look good. Add this style to `button` in `index.css`:
+
+```
+display: block;
+margin-left: auto;
+margin-right: auto;
+```
+
+#### **Exercise 4**
+
+We just learned how to change the color of our header using `this.state`. Do you think you could figure out how to change our image when a button is clicked? See if you can follow the steps above to change the `src` attribute of the `img` tag in `Profile` using the same steps:
+
+1. Add a constructor method to `Profile`
+2. Set the initial `this.state` to the current image, and make sure the `img` tag is using the state to set it's `src`.
+3. Make a method to change the value of `src` to something else. Don't forget to bind it like we did before (adding that last line to the `constructor`).
+4. Add a button that, when clicked, calls this method.
+
+---
+***Stuck?***
+
+Your code for `Profile` should look something like this:
+```
+class Profile extends React.Component {
+  constructor(props) {
+    ...
+    this.state = { url: 'image url 1' };
+    this.changeUrl = this.changeUrl.bind(this);
+  }
+
+  changeUrl() {
+    if (this.state.url === 'image url 1') {
+        this.setState({ url: 'image url 2'' });
+    } else {
+        this.setState({ url: 'image url 1' });
+    }
+  }
+
+  render() {
+    return (<div>
+              ...
+              <img
+              alt="dog" src={this.state.url} />
+              <button onClick={this.changeUrl}>
+                Change picture
+              </button>
+            </div>);
+  }
+}
+```
+
+---
