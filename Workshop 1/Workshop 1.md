@@ -30,7 +30,7 @@ ReactJS, or React, is a JavaScript library for building user interfaces for web 
 - [Part IV: Components](#part-iv-components)
 - [Part V: props](#part-v-props)
 - [Part VI: state](#part-vi-state)
-- [Part VII: Hacking](#part-vi-hacking)
+- [Part VII: Hacking](#part-vii-hacking)
 
 ## Part I: Setup
 
