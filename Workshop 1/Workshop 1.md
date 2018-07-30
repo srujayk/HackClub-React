@@ -1,16 +1,18 @@
 ---
-name: Intro to React: Part 1
+name: Intro to React
 description: Make a basic website with React JS
 author: @srujayk
 group: experimental
 order: 15
 ---
 
-# Intro to ReactJS: Part 1
+# Intro to ReactJS
 
 _**We recommend going through this workshop in Google Chrome.**_
 
 **What we're going to building**: A basic portfolio website
+
+![Final Product](final_screenshot.png)
 
 **Prerequisites**: HTML and CSS
 
@@ -79,7 +81,7 @@ tutorial.
 `let y = ["1", "2", "3"];`  The `let` keyword declares a mutable, or changeable, variable. In this case, an array named `y` initialized with the string values `1, 2, and 3`.
 
 
-```
+```js
 if (x === 3) {
     console.log("x is 3!");
 } else {
@@ -88,7 +90,7 @@ if (x === 3) {
 ```
 This is an `if` statement, which is used to have code run only under certain conditions. In the example above, `if` `x` is equal(`===`) to `3`, then the block of code in the first set of curly braces is run. Otherwise, the code inside the `else` braces is run.
 
-```
+```js
 class Hi {    
     sayHi(name) {
         return `Hi ${name}`;
