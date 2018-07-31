@@ -20,9 +20,11 @@ _**We recommend going through this workshop in Google Chrome.**_
 
 **How long this workshop will take**: 1 hour
 
-As you know from the last workshop, React is a JavaScript library for building user interfaces for web apps. Firebase is a platform developed by [Google](http://google.com) that allows us to have a backend, or database, for our application. We're going to be building a Hacker News clone, using React to submit/display/upvote posts, and Firebase to store our data.
+As you know from the last workshop, React is a JavaScript library for building user interfaces for web apps. [Firebase](http://firebase.google.com) is a platform developed by Google that allows us to have a backend, or database, for our application. We're going to be building a Hacker News clone, using React to submit/display/upvote posts, and Firebase to store our data.
 
-[Live Demo/Final Code](https://repl.it/@srujayk/hackernewsclone)
+[Live Demo](https://ecstatic-heisenberg-136d22.netlify.com/)
+
+[Final Code](https://repl.it/@srujayk/hackernewsclone)
 
 **Table of contents:**
 
@@ -39,6 +41,8 @@ As you know from the last workshop, React is a JavaScript library for building u
 To get your environment set up, head over to [Repl.it](http://repl.it) and create an account or log in.
 
 Then, go to [this Repl](https://repl.it/@srujayk/hackernewsclone-blank), which contains some basic starter code for this workshop. Click the **fork** button near the top menu to create a copy of this code that you can start editing.
+
+The CSS for this workshop has been pre-made for you, so we can focus on React. You can check it out in `App.css`.
 
 ### Firebase
 To get set up with Firebase, first head over to [firebase.google.com](http://firebase.google.com), and click **Go to Console** in the top right.
@@ -222,7 +226,7 @@ Now, we can create an event handler method. Create a method called `handleInput`
 ```js
 handleInput(e) {
     this.setState({
-        e.target.name: e.target.value
+        [e.target.name]: e.target.value
     });
 }
 ```
@@ -259,7 +263,7 @@ handleSubmit(e) {
 The first thing we need to do is prevent users from submitting an empty form, so our Firebase database is not full of blank posts. Add `e.preventDefault();` to `handleSubmit` so this doesn't happen.
 ```js
 handleSubmit(e) {
-    e.preventDefault;
+    e.preventDefault();
 }
 ```
 Now, we need to actually connect to our database. We do this by creating a *reference* to the database. In our code, let's create a reference to a *node* called `posts`, which is where all the posts will be stored. (Check out the [Firebase documentation](https://firebase.google.com/docs/database/web/structure-data) on references and nodes to learn more.)
@@ -296,8 +300,8 @@ Now that we've done that, we can clear our input fields so they're ready for som
 handleSubmit(e) {
     ...
     this.setState({
-        formTitle: "",
-        formLink: ""
+        formTitle: '',
+        formLink: ''
     });
 }
 ```
@@ -329,8 +333,8 @@ A component's lifecycle is the different stages it goes through when being creat
 It can be useful in React to be able to execute certain code based on where a component is in it's lifecycle. To make it easier, React has *lifecycle methods*, which are optional methods for your component that automatically run at each stage. A few are listed below:
 
 - `componentDidMount()`: called after component is created and rendered
+- `componentDidUpdate()`: called after a component's props or state are updated (automatically re-renders when called)
 - `componentWillUnmount()`: called before a component is removed
-- `componentDidUpdate()`: called after a component's props or state are updated
 
 Check out the [React docs](https://reactjs.org/docs/react-component.html) if you want to learn more about the component lifecycle.
 
@@ -380,12 +384,12 @@ componentDidMount() {
     postsRef.on('value', (snapshot) => {
         ...
         let finalPosts = [];
-        for (let post in posts) {
+        for (let post in rawPosts) {
             newState.push({
                 id: post,
-                title: posts[post].title,
-                link: posts[post].link,
-                upvotes: posts[post].upvotes
+                title: rawPosts[post].title,
+                link: rawPosts[post].link,
+                upvotes: rawPosts[post].upvotes
             });
         }
     });
@@ -417,9 +421,12 @@ Finally, we can set the `posts` array that we created in `this.state` equal to `
 ```js
 componentDidMount() {
     ...
-    this.setState({
-        posts: finalPosts
-    });
+    postsRef.on('value', (snapshot) => {
+        ...
+        this.setState({
+            posts: finalPosts
+        });
+    })
 }
 ```
 Now all of our nicely formatted `post` objects are stored in `posts`. Now we can display them on the page! For reference, the completed `componentDidMount` method is shown below:
@@ -573,8 +580,8 @@ handleUpvote(postId, prevCount) {
 Now, we're going to create a Firebase reference to the post with an id of `postId`, then `set` it's `upvotes` value to `prevCount + 1`.
 
 ```js
-handleUpvote(id, prevCount) {
-    const postsRef = firebase.database.ref('posts' + postId + '/upvotes').set(prevCount + 1);
+handleUpvote(postId, prevCount) {
+    const postsRef = firebase.database().ref('posts' + postId + '/upvotes').set(prevCount + 1);
 }
 ```
 
@@ -701,7 +708,7 @@ render() {
     return (
         <div>
             ...
-            {this.state.upvoted.indexOf(post.id) == -1 &&
+            {this.state.upvoted.indexOf(post.id) === -1 &&
              (<button onClick={() => this.handleUpvote(post.id, post.upvotes)}>
                 upvote
               </button>)}
@@ -715,3 +722,7 @@ Now when you click the **upvote** button, it increases the upvote count, then di
 We're done! You now have your own Hacker News!
 
 ## Part VI: Hacking
+
+- Sort the posts by upvote count
+- Validate URLs that are submitted (make sure they are actual links)
+- Authenticate users using [Firebase Authentication](https://firebase.google.com/docs/auth/) *(advanced)*
